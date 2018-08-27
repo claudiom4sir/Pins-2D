@@ -2,11 +2,21 @@
 
 public class Ball : MonoBehaviour {
 
-    [SerializeField] float rotationSpeed = 20f;
+    [SerializeField] float rotationSpeed = 50f;
 
     void Update()
     {
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelComplete())
+            return;
         transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+    }
+
+    public float RotationSpeed
+    {
+        set
+        {
+            rotationSpeed = value;
+        }
     }
 
 }
