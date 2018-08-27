@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
         gameOver = true;
+        SoundManager.singleton.PlayGameover();
         Camera.main.backgroundColor = Color.red;
         StartCoroutine(LoadLevel());
     }
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour {
     {
         pinNumber--;
         UIManager.singleton.ScoreText = pinNumber;
+        SoundManager.singleton.PlayStrike();
         if (pinNumber == 0)
             LevelComplete();
     }
