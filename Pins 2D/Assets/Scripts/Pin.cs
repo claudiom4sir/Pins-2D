@@ -3,8 +3,7 @@
 public class Pin : MonoBehaviour {
 
     [SerializeField] GameObject target;
-    [SerializeField] float speed = 5f;
-    bool targetReached = false;
+    [SerializeField] float speed;
     Rigidbody2D rb;
 
     void Start()
@@ -15,7 +14,7 @@ public class Pin : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (targetReached || GameManager.singleton.IsGameOver())
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelComplete())
             return;
         rb.MovePosition(rb.position + Vector2.up * speed * Time.fixedDeltaTime);
     }
@@ -33,20 +32,19 @@ public class Pin : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) // when pin touchs something
-    {
+    { 
         if (other.tag == "Ball")
         {
-            targetReached = true;
             transform.SetParent(target.transform);
             PinManager.singleton.SetPinInMoviment(false);
             GameManager.singleton.IncreasePlayerScore();
-            enabled = false;
         }
         else if (other.tag == "Pin")
         {
             if(!GameManager.singleton.IsGameOver())
             GameManager.singleton.GameOver();
         }
+        enabled = false; // when this pins will collide with something, his script will be desabled
     }
 
 }

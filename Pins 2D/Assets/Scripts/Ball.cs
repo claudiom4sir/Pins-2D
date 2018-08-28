@@ -2,7 +2,7 @@
 
 public class Ball : MonoBehaviour {
 
-    [SerializeField] float rotationSpeed = 50f;
+    [SerializeField] float rotationSpeed;
 
     void Update()
     {

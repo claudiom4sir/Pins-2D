@@ -9,12 +9,11 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] GameObject pinPrefab;
     [SerializeField] GameObject ball;
-    [SerializeField] float timeBeforeLoad = 3f;
 
     bool gameOver = false;
     bool levelComplete = false;
     int pinNumber;
-    int currentLevel = 1;
+    int currentLevel;
 
     void Awake() // singleton design pattern
     {
@@ -33,10 +32,12 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        if (levelComplete)
+            return;
         gameOver = true;
         SoundManager.singleton.PlayGameover();
         Camera.main.backgroundColor = Color.red;
-        StartCoroutine(LoadLevel());
+        UIManager.singleton.EnableMenuUI(false);
     }
 
     public bool IsGameOver()
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour {
 
     public void IncreasePlayerScore()
     {
+        if (gameOver)
+            return;
         pinNumber--;
         UIManager.singleton.ScoreText = pinNumber;
         SoundManager.singleton.PlayStrike();
@@ -63,7 +66,7 @@ public class GameManager : MonoBehaviour {
         levelComplete = true;
         Camera.main.backgroundColor = Color.green;
         LevelManager.singleton.IncreaseParameters();
-        StartCoroutine(LoadLevel());
+        UIManager.singleton.EnableMenuUI(true);
     }
 
     void SetLevelSettings()
@@ -82,10 +85,20 @@ public class GameManager : MonoBehaviour {
         }
     } 
 
-    IEnumerator LoadLevel() // used to delay the reload of the scene
+    void LoadLevel() // used to delay the reload of the scene
     {
-        yield return new WaitForSeconds(timeBeforeLoad);
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void RestartCurrentLevel()
+    {
+        LoadLevel();
+    }
+
+    public void RestartLevelToOne()
+    {
+        LevelManager.singleton.ResetGame();
+        LoadLevel();
     }
 
 }

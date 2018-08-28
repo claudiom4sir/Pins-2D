@@ -14,10 +14,15 @@ public class SoundManager : MonoBehaviour {
         if (singleton == null)
         {
             singleton = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // used to do not stop the music between scenes
         }
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        isAudioEnabled = UIManager.singleton.AudioToggle.isOn;    
     }
 
     public void PlayStrike()
