@@ -8,7 +8,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] Text scoreText;
     [SerializeField] Text levelText;
     [SerializeField] Toggle audioToggle;
-    [SerializeField] GameObject menu;
+    [SerializeField] GameObject levelEndMenu;
+    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject menuButton;
  
     void Awake() // singleton design pattern
     {
@@ -20,16 +22,33 @@ public class UIManager : MonoBehaviour {
 
     void Start()
     {
-        menu.SetActive(false);    
+        levelEndMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
-    public void EnableMenuUI(bool isLevelComplete)
+    public void EnableLevelEndMenuUI(bool isLevelComplete)
     {
-        menu.SetActive(true);
+        levelEndMenu.SetActive(true);
+        menuButton.SetActive(false);
         if (isLevelComplete)
-            menu.GetComponent<MenuUI>().SetText("NEXT LEVEL");
+            levelEndMenu.GetComponent<LevelEndMenuUI>().SetText("NEXT LEVEL");
         else
-            menu.GetComponent<MenuUI>().SetText("RETRY LEVEL");
+            levelEndMenu.GetComponent<LevelEndMenuUI>().SetText("RETRY LEVEL");
+    }
+
+    public void TogglePauseMenuUI()
+    {
+        if (!pauseMenu.activeSelf)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+        }
+
     }
 
     public Toggle AudioToggle
@@ -64,6 +83,11 @@ public class UIManager : MonoBehaviour {
     public void ResetGame() // called from Reset Game Button
     {
         GameManager.singleton.RestartLevelToOne();
+    }
+
+    public void Quit()
+    {
+        GameManager.singleton.Quit();
     }
 
 }

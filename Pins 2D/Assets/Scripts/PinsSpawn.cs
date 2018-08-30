@@ -20,8 +20,15 @@ public class PinsSpawn : MonoBehaviour {
             return;
         if (currentPin == null)
             CreatePin();
-        if (Input.GetKeyDown(KeyCode.Space) && currentPin != null)
+        if (Input.GetKeyDown(KeyCode.Space) && currentPin != null) // used on pc, on android mobile is used OnMouseDown
             StartMovePin();
+    }
+
+    private void OnMouseDown() // used as a touch in android mobile
+    {
+        if (currentPin == null)
+            return;
+        StartMovePin();
     }
 
     void CreatePin()

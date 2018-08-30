@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
         gameOver = true;
         SoundManager.singleton.PlayGameover();
         Camera.main.backgroundColor = Color.red;
-        UIManager.singleton.EnableMenuUI(false);
+        UIManager.singleton.EnableLevelEndMenuUI(false);
     }
 
     public bool IsGameOver()
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
         levelComplete = true;
         Camera.main.backgroundColor = Color.green;
         LevelManager.singleton.IncreaseParameters();
-        UIManager.singleton.EnableMenuUI(true);
+        UIManager.singleton.EnableLevelEndMenuUI(true);
     }
 
     void SetLevelSettings()
@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour {
     void LoadLevel() // used to delay the reload of the scene
     {
         SceneManager.LoadScene("GameScene");
+        Time.timeScale = 1f;
     }
 
     public void RestartCurrentLevel()
@@ -99,6 +100,11 @@ public class GameManager : MonoBehaviour {
     {
         LevelManager.singleton.ResetGame();
         LoadLevel();
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 }
